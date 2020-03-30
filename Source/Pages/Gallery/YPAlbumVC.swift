@@ -11,7 +11,9 @@ import Stevia
 import Photos
 
 class YPAlbumVC: UIViewController {
-    
+	
+	internal static var selectedAlbum: YPAlbum?
+	
     override var prefersStatusBarHidden: Bool {
          return YPConfig.hidesStatusBar
     }
@@ -41,6 +43,8 @@ class YPAlbumVC: UIViewController {
                                                            action: #selector(close))
         setUpTableView()
         fetchAlbumsInBackground()
+        
+        self.navigationController?.navigationBar.isTranslucent = false 
     }
     
     func fetchAlbumsInBackground() {
@@ -93,6 +97,7 @@ extension YPAlbumVC: UITableViewDataSource {
 extension YPAlbumVC: UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		YPAlbumVC.selectedAlbum = albums[indexPath.row]
         didSelectAlbum?(albums[indexPath.row])
     }
 }

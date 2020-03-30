@@ -16,6 +16,7 @@ public struct YPIcons {
     public var backButtonIcon: UIImage = imageFromBundle("yp_arrow_left")
     public var arrowDownIcon: UIImage = imageFromBundle("yp_arrow_down")
     public var cropIcon: UIImage = imageFromBundle("yp_iconCrop")
+    public var collapseIcon: UIImage = imageFromBundle("yp_iconCollapse")
     public var flashOnIcon: UIImage = imageFromBundle("yp_iconFlash_on")
     public var flashOffIcon: UIImage = imageFromBundle("yp_iconFlash_off")
     public var flashAutoIcon: UIImage = imageFromBundle("yp_iconFlash_auto")
@@ -26,4 +27,5 @@ public struct YPIcons {
     public var captureVideoImage: UIImage = imageFromBundle("yp_iconVideoCapture")
     public var captureVideoOnImage: UIImage = imageFromBundle("yp_iconVideoCaptureRecording")
     public var playImage: UIImage = imageFromBundle("yp_play")
+    public var deleteImage: UIImage = imageFromBundle("yp_delete")
 }

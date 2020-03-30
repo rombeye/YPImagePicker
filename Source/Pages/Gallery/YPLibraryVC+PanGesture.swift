@@ -24,6 +24,7 @@ public class PanGestureHelper: NSObject, UIGestureRecognizerDelegate {
         get { return v.assetViewContainerConstraintTop.constant }
         set {
             if newValue >= v.assetZoomableViewMinimalVisibleHeight - v.assetViewContainer.frame.height {
+				// comment to temporarily quick-fix a bug where pan gesture messes up scroll -- needs further investigation
                 v.assetViewContainerConstraintTop.constant = newValue
             }
         }
@@ -86,7 +87,10 @@ public class PanGestureHelper: NSObject, UIGestureRecognizerDelegate {
     
     @objc
     func panned(_ sender: UIPanGestureRecognizer) {
-        
+		
+		// no selection -- asset view container has no media item inside it
+		guard YPLibraryVC.finishedInitialSelection  else { return }
+		
         let containerHeight = v.assetViewContainer.frame.height
         let currentPos = sender.location(in: v)
         let overYLimitToStartMovingUp = currentPos.y * 1.4 < cropBottomY - dragDiff

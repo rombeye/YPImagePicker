@@ -12,21 +12,28 @@ import Photos
 
 final class YPLibraryView: UIView {
     
-    let assetZoomableViewMinimalVisibleHeight: CGFloat  = 50
-    
     @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var thumbCollectionView: UICollectionView!
     @IBOutlet weak var assetZoomableView: YPAssetZoomableView!
     @IBOutlet weak var assetViewContainer: YPAssetViewContainer!
     @IBOutlet weak var assetViewContainerConstraintTop: NSLayoutConstraint!
+    @IBOutlet weak var aspectRatioViewConstraint: NSLayoutConstraint!
+	@IBOutlet weak var assetWidthConstraint: NSLayoutConstraint!
+	@IBOutlet weak var assetHeightConstraint: NSLayoutConstraint!
     
     let maxNumberWarningView = UIView()
     let maxNumberWarningLabel = UILabel()
     let progressView = UIProgressView()
     let line = UIView()
+	
+	static var shared: YPLibraryView?
+	let assetZoomableViewMinimalVisibleHeight: CGFloat  = 50
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
+		
+		YPLibraryView.shared = self
+		
         sv(
             line
         )

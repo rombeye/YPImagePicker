@@ -19,20 +19,24 @@ class YPAssetViewContainer: UIView {
     public let spinnerView = UIView()
     public let squareCropButton = UIButton()
     public let multipleSelectionButton = UIButton()
+    public let deleteButton = UIButton()
     public var onlySquare = YPConfig.library.onlySquare
     public var isShown = true
     
     private let spinner = UIActivityIndicatorView(style: .white)
-    private var shouldCropToSquare = true
+    static public var shouldCropToSquare = false
     private var isMultipleSelection = false
 
     override func awakeFromNib() {
         super.awakeFromNib()
         
         addSubview(grid)
-        grid.frame = frame
+        var newFrame = frame
+        newFrame.origin.x = 0
+        newFrame.origin.y = 0
+        grid.frame = newFrame
         clipsToBounds = true
-        
+        self.layer.cornerRadius = 4.0
         for sv in subviews {
             if let cv = sv as? YPAssetZoomableView {
                 zoomableView = cv
@@ -68,46 +72,73 @@ class YPAssetViewContainer: UIView {
         
         if !onlySquare {
             // Crop Button
-            squareCropButton.setImage(YPConfig.icons.cropIcon, for: .normal)
+            squareCropButton.setImage(YPConfig.icons.collapseIcon, for: .normal)
             sv(squareCropButton)
-            squareCropButton.size(42)
-            |-15-squareCropButton
-            squareCropButton.Bottom == zoomableView!.Bottom - 15
+            squareCropButton.size(32)
+            squareCropButton-8-|
+            squareCropButton.Bottom == zoomableView!.Bottom - 8
         }
         
         // Multiple selection button
         sv(multipleSelectionButton)
-        multipleSelectionButton.size(42)
-        multipleSelectionButton-15-|
+        multipleSelectionButton.size(32)
+        |-8-multipleSelectionButton
         multipleSelectionButton.setImage(YPConfig.icons.multipleSelectionOffIcon, for: .normal)
-        multipleSelectionButton.Bottom == zoomableView!.Bottom - 15
-        
+        multipleSelectionButton.Bottom == zoomableView!.Bottom - 8
+
+        // Multiple selection button
+        sv(deleteButton)
+        deleteButton.size(32)
+        deleteButton-8-|
+        deleteButton.setImage(YPConfig.icons.deleteImage, for: .normal)
+        deleteButton.Top == zoomableView!.Top + 8
+        deleteButton.isHidden = true
     }
     
     // MARK: - Square button
 
     @objc public func squareCropButtonTapped() {
         if let zoomableView = zoomableView {
-            let z = zoomableView.zoomScale
-            shouldCropToSquare = (z >= 1 && z < zoomableView.squaredZoomScale)
+            //let z = zoomableView.zoomScale
+            //shouldCropToSquare = (z >= 1 && z < zoomableView.squaredZoomScale)
+			YPAssetViewContainer.shouldCropToSquare = !YPAssetViewContainer.shouldCropToSquare
+			updateSquareCropButtonUI()
         }
-        zoomableView?.fitImage(shouldCropToSquare, animated: true)
+		zoomableView?.fitImage(YPAssetViewContainer.shouldCropToSquare, animated: true)
     }
     
     
     public func refreshSquareCropButton() {
-        if onlySquare {
-            squareCropButton.isHidden = true
-        } else {
-            if let image = zoomableView?.assetImageView.image {
-                let isImageASquare = image.size.width == image.size.height
-                squareCropButton.isHidden = isImageASquare
-            }
-        }
-        
-        let shouldFit = YPConfig.library.onlySquare ? true : shouldCropToSquare
+		let shouldFit = YPConfig.library.onlySquare ? true : YPAssetViewContainer.shouldCropToSquare
         zoomableView?.fitImage(shouldFit)
+		
+		updateSquareCropButtonUI()
     }
+	
+	func updateSquareCropButtonUI() {
+		// update visibility
+		var shouldHide = false
+		shouldHide = onlySquare
+		if let image = zoomableView?.assetImageView.image {
+			// asset is square and cannot be expanded
+			let isImageASquare = image.size.width == image.size.height
+			shouldHide = isImageASquare
+		}
+		
+		// hide square button for more than 1 item
+		if YPLibraryVC.selection.count > 1 {
+			shouldHide = true
+		}
+		
+		// update image
+		if YPAssetViewContainer.shouldCropToSquare {
+			squareCropButton.setImage(YPConfig.icons.collapseIcon, for: .normal)
+		} else {
+			squareCropButton.setImage(YPConfig.icons.cropIcon, for: .normal)
+		}
+		
+		squareCropButton.isHidden = shouldHide
+	}
     
     // MARK: - Multiple selection
 
@@ -126,7 +157,7 @@ extension YPAssetViewContainer: YPAssetZoomableViewDelegate {
         let newFrame = zoomableView.assetImageView.convert(zoomableView.assetImageView.bounds, to: self)
         
         // update grid position
-        grid.frame = frame.intersection(newFrame)
+        grid.frame = newFrame
         grid.layoutIfNeeded()
         
         // Update play imageView position - bringing the playImageView from the videoView to assetViewContainer,

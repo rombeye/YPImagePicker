@@ -148,6 +148,12 @@ public class YPImagePicker: UINavigationController {
         }
     }
     
+    override public func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationBar.shadowImage = UIImage()
+    }
+    
     deinit {
         print("Picker deinited 👍")
     }

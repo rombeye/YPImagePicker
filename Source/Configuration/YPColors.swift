@@ -13,11 +13,11 @@ public struct YPColors {
    // MARK: - Common
 
     /// The common tint color which is used for done buttons in navigation bar, multiple items selection and so on.
-    public var tintColor = UIColor(r: 10, g: 120, b: 254)
+    public var tintColor = #colorLiteral(red: 0.2039215686, green: 0.4117647059, blue: 0.9803921569, alpha: 1)
         
     /// A color for navigation bar spinner.
     /// Default is nil, which is default iOS gray UIActivityIndicator.
-    public var navigationBarActivityIndicatorColor: UIColor?
+    public var navigationBarActivityIndicatorColor: UIColor? = #colorLiteral(red: 0.2039215686, green: 0.4117647059, blue: 0.9803921569, alpha: 1)
     
     /// A color for circle for selected items in multiple selection
     /// Default is nil, which takes tintColor.

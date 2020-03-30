@@ -12,7 +12,7 @@ import AVFoundation
 /*
  This class contains all support and helper methods to process the videos
  */
-class YPVideoProcessor {
+public class YPVideoProcessor {
 
     /// Creates an output path and removes the file in temp folder if existing
     ///
@@ -51,7 +51,7 @@ class YPVideoProcessor {
     /*
      Crops the video to square by video height from the top of the video.
      */
-    static func cropToSquare(filePath: URL, completion: @escaping (_ outputURL : URL?) -> ()) {
+    public static func cropToSquare(filePath: URL, completion: @escaping (_ outputURL : URL?) -> ()) {
         
         // output file
         let outputPath = makeVideoPathURL(temporaryFolder: true, fileName: "squaredVideoFromCamera")

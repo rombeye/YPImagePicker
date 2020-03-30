@@ -59,6 +59,9 @@ public class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
         if YPConfig.screens.contains(.library) {
             libraryVC = YPLibraryVC()
             libraryVC?.delegate = self
+			
+			let noSelection = YPLibraryVC.selection.count == 0
+			YPLibraryVC.finishedInitialSelection = !noSelection
         }
         
         // Camera
@@ -200,7 +203,8 @@ public class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
         vc.didSelectAlbum = { [weak self] album in
             self?.libraryVC?.setAlbum(album)
             self?.libraryVC?.title = album.title
-            self?.libraryVC?.refreshMediaRequest()
+			// TODO refreshMediaRequest()
+			self?.libraryVC?.refreshMediaRequest(isChangingAlbum: true)
             self?.setTitleViewWithTitle(aTitle: album.title)
             self?.dismiss(animated: true, completion: nil)
         }
@@ -225,6 +229,7 @@ public class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
         if let navBarTitleColor = UINavigationBar.appearance().titleTextAttributes?[.foregroundColor] as? UIColor {
             label.textColor = navBarTitleColor
         }
+        label.textColor = YPConfig.colors.tintColor
         
         if YPConfig.library.options != nil {
             titleView.sv(
@@ -234,7 +239,7 @@ public class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
             align(horizontally: label)
         } else {
             let arrow = UIImageView()
-            arrow.image = YPConfig.icons.arrowDownIcon
+            arrow.image = nil//YPConfig.icons.arrowDownIcon
             
             let attributes = UINavigationBar.appearance().titleTextAttributes
             if let attributes = attributes, let foregroundColor = attributes[NSAttributedString.Key.foregroundColor] as? UIColor {
@@ -264,7 +269,8 @@ public class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
         navigationItem.titleView = titleView
     }
     
-    func updateUI() {
+    func updateUI() {        
+        
         // Update Nav Bar state.
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: YPConfig.wordings.cancel,
                                                            style: .plain,
@@ -274,14 +280,14 @@ public class YPPickerVC: YPBottomPager, YPBottomPagerDelegate {
         switch mode {
         case .library:
             setTitleViewWithTitle(aTitle: libraryVC?.title ?? "")
-            navigationItem.rightBarButtonItem = UIBarButtonItem(title: YPConfig.wordings.next,
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: YPConfig.wordings.done,
                                                                 style: .done,
                                                                 target: self,
                                                                 action: #selector(done))
             navigationItem.rightBarButtonItem?.tintColor = YPConfig.colors.tintColor
             
             // Disable Next Button until minNumberOfItems is reached.
-            navigationItem.rightBarButtonItem?.isEnabled = libraryVC!.selection.count >= YPConfig.library.minNumberOfItems
+            navigationItem.rightBarButtonItem?.isEnabled = YPLibraryVC.selection.count >= YPConfig.library.minNumberOfItems
 
         case .camera:
             navigationItem.titleView = nil

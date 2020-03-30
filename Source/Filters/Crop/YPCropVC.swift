@@ -67,6 +67,7 @@ class YPCropVC: UIViewController {
         v.imageView.addGestureRecognizer(pinchGR)
         
         // Pan Gesture
+		// disable pan gesture to prevent bug that messes up scroll
         panGR.addTarget(self, action: #selector(pan(_:)))
         panGR.delegate = self
         v.imageView.addGestureRecognizer(panGR)
