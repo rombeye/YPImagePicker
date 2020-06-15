@@ -14,7 +14,11 @@ public protocol YPImagePickerDelegate: AnyObject {
     func noPhotos()
 }
 
-public class YPImagePicker: UINavigationController {
+open class YPImagePicker: UINavigationController {
+      
+    open override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        return .portrait
+    }
     
     private var _didFinishPicking: (([YPMediaItem], Bool) -> Void)?
     public func didFinishPicking(completion: @escaping (_ items: [YPMediaItem], _ cancelled: Bool) -> Void) {
@@ -22,7 +26,7 @@ public class YPImagePicker: UINavigationController {
     }
     public weak var imagePickerDelegate: YPImagePickerDelegate?
     
-    public override var preferredStatusBarStyle: UIStatusBarStyle {
+    open override var preferredStatusBarStyle: UIStatusBarStyle {
         return YPImagePickerConfiguration.shared.preferredStatusBarStyle
     }
     
@@ -46,14 +50,16 @@ public class YPImagePicker: UINavigationController {
         YPImagePickerConfiguration.shared = configuration
         picker = YPPickerVC()
         super.init(nibName: nil, bundle: nil)
+        modalPresentationStyle = .fullScreen // Force .fullScreen as iOS 13 now shows modals as cards by default.
         picker.imagePickerDelegate = self
+        navigationBar.tintColor = .ypLabel
     }
     
     public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override public func viewDidLoad() {
+override open func viewDidLoad() {
         super.viewDidLoad()
         picker.didClose = { [weak self] in
             self?._didFinishPicking?([], true)
@@ -63,8 +69,6 @@ public class YPImagePicker: UINavigationController {
         navigationBar.isTranslucent = false
 
         picker.didSelectItems = { [weak self] items in
-            let showsFilters = YPConfig.showsFilters
-            
             // Use Fade transition instead of default push animation
             let transition = CATransition()
             transition.duration = 0.3
@@ -115,7 +119,7 @@ public class YPImagePicker: UINavigationController {
                     }
                 }
                 
-                if showsFilters {
+                if YPConfig.showsPhotoFilters {
                     let filterVC = YPPhotoFiltersVC(inputPhoto: photo,
                                                     isFromSelectionVC: false)
                     // Show filters and then crop
@@ -129,7 +133,7 @@ public class YPImagePicker: UINavigationController {
                     showCropVC(photo: photo, completion: completion)
                 }
             case .video(let video):
-                if showsFilters {
+                if YPConfig.showsVideoTrimmer {
                     let videoFiltersVC = YPVideoFiltersVC.initWith(video: video,
                                                                    isFromSelectionVC: false)
                     videoFiltersVC.didSave = { [weak self] outputMedia in
@@ -140,11 +144,6 @@ public class YPImagePicker: UINavigationController {
                     self?.didSelect(items: [YPMediaItem.video(v: video)])
                 }
             }
-        }
-        
-        // If user has not customized the Nav Bar tintColor, then use black.
-        if UINavigationBar.appearance().tintColor == nil {
-            UINavigationBar.appearance().tintColor  = .black
         }
     }
     

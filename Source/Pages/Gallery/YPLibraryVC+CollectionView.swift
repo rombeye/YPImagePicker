@@ -14,6 +14,7 @@ extension YPLibraryVC {
 	static var canDeselectItem: Bool { return YPLibraryVC.selection.count > 1 }
     
     func setupCollectionView() {
+        v.collectionView.backgroundColor = YPConfig.colors.libraryScreenBackgroundColor
         v.collectionView.dataSource = self
         v.collectionView.delegate = self
         v.collectionView.register(YPLibraryViewCell.self, forCellWithReuseIdentifier: "YPLibraryViewCell")
@@ -251,8 +252,8 @@ extension YPLibraryVC: UICollectionViewDelegate {
                                                                 fatalError("unexpected cell in collection view")
         }
         cell.representedAssetIdentifier = asset.localIdentifier
-        cell.multipleSelectionIndicator.selectionColor = YPConfig.colors.multipleItemsSelectedCircleColor
-                                                            ?? YPConfig.colors.tintColor
+        cell.multipleSelectionIndicator.selectionColor =
+            YPConfig.colors.multipleItemsSelectedCircleColor ?? YPConfig.colors.tintColor
         mediaManager.imageManager?.requestImage(for: asset,
                                    targetSize: v.cellSize(),
                                    contentMode: .aspectFill,
@@ -312,10 +313,8 @@ extension YPLibraryVC: UICollectionViewDelegate {
         currentlySelectedIndex = indexPath.row
 
         if multipleSelectionEnabled {
-            
             let cellIsInTheSelectionPool = isInSelectionPool(indexPath: indexPath)
             let cellIsCurrentlySelected = previouslySelectedIndexPath.row == currentlySelectedIndex
-
             if cellIsInTheSelectionPool {
                 if cellIsCurrentlySelected {
                     deselect(indexPath: indexPath)
@@ -324,14 +323,21 @@ extension YPLibraryVC: UICollectionViewDelegate {
             } else if isLimitExceeded == false {
                 addToSelection(indexPath: indexPath)
             }
+            collectionView.reloadItems(at: [indexPath])
+            collectionView.reloadItems(at: [previouslySelectedIndexPath])
         } else {
 			/*
             let previouslySelectedIndices = YPLibraryVC.selection
             YPLibraryVC.selection.removeAll()
             addToSelection(indexPath: indexPath)
-            if let selectedRow = previouslySelectedIndices.first?.index {
-                let previouslySelectedIndexPath = IndexPath(row: selectedRow, section: 0)
-                collectionView.reloadItems(at: [previouslySelectedIndexPath])
+            
+            
+            // Force deseletion of previously selected cell.
+            // In the case where the previous cell was loaded from iCloud, a new image was fetched
+            // which triggered photoLibraryDidChange() and reloadItems() which breaks selection.
+            //
+            if let previousCell = collectionView.cellForItem(at: previouslySelectedIndexPath) as? YPLibraryViewCell {
+                previousCell.isSelected = false
             }
 			*/
 			assertionFailure("Unintended code path")

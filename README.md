@@ -6,7 +6,7 @@
 
 YPImagePicker is an instagram-like photo/video picker for iOS written in pure Swift. It is feature-rich and highly customizable to match your App's requirements.
 
-[![Language: Swift 4](https://img.shields.io/badge/language-swift%204-f48041.svg?style=flat)](https://developer.apple.com/swift)
+[![Language: Swift 5](https://img.shields.io/badge/language-swift%205-f48041.svg?style=flat)](https://developer.apple.com/swift)
 [![Version](https://img.shields.io/cocoapods/v/YPImagePicker.svg?style=flat)](http://cocoapods.org/pods/YPImagePicker)
 [![Platform](https://img.shields.io/cocoapods/p/YPImagePicker.svg?style=flat)](http://cocoapods.org/pods/YPImagePicker)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
@@ -99,7 +99,8 @@ let picker = YPImagePicker(configuration: config)
 config.isScrollToChangeModesEnabled = true
 config.onlySquareImagesFromCamera = true
 config.usesFrontCamera = false
-config.showsFilters = true
+config.showsPhotoFilters = true
+config.showsVideoTrimmer = true
 config.shouldSaveNewPicturesToAlbum = true
 config.albumName = "DefaultYPImagePickerAlbumName"
 config.startOnScreen = YPPickerScreen.photo
@@ -113,19 +114,23 @@ config.preferredStatusBarStyle = UIStatusBarStyle.default
 config.bottomMenuItemSelectedColour = UIColor(r: 38, g: 38, b: 38)
 config.bottomMenuItemUnSelectedColour = UIColor(r: 153, g: 153, b: 153)
 config.filters = [DefaultYPFilters...]
+config.maxCameraZoomFactor = 1.0
 ```
 
 ### Library
 ```swift
 config.library.options = nil
 config.library.onlySquare = false
+config.library.isSquareByDefault = true
 config.library.minWidthForItem = nil
 config.library.mediaType = YPlibraryMediaType.photo
+config.library.defaultMultipleSelection = false
 config.library.maxNumberOfItems = 1
 config.library.minNumberOfItems = 1
 config.library.numberOfItemsInRow = 4
 config.library.spacingBetweenItems = 1.0
 config.library.skipSelectionsGallery = false
+config.library.preselectedItems = nil
 ```
 
 ### Video
@@ -137,6 +142,11 @@ config.video.libraryTimeLimit = 60.0
 config.video.minimumTimeLimit = 3.0
 config.video.trimmerMaxDuration = 60.0
 config.video.trimmerMinDuration = 3.0
+```
+
+### Gallery
+```swift
+config.gallery.hidesRemoveButton = false
 ```
 
 ## Default Configuration
@@ -226,7 +236,7 @@ picker.didFinishPicking { [unowned picker] items, cancelled in
 That's it !
 
 ## Languages
-🇺🇸 English, 🇪🇸 Spanish, 🇫🇷 French 🇷🇺 Russian, 🇳🇱 Dutch, 🇧🇷 Brazilian, 🇹🇷 Turkish, 🇸🇾 Arabic, 🇩🇪 German, 🇮🇹 Italian, 🇯🇵 Japanese, 🇨🇳 Chinese, 🇮🇩 Indonesian, 🇰🇷 Korean, 🇹🇼 繁體中文（台灣）
+🇺🇸 English, 🇪🇸 Spanish, 🇫🇷 French 🇷🇺 Russian, 🇳🇱 Dutch, 🇧🇷 Brazilian, 🇹🇷 Turkish, 🇸🇾 Arabic, 🇩🇪 German, 🇮🇹 Italian, 🇯🇵 Japanese, 🇨🇳 Chinese, 🇮🇩 Indonesian, 🇰🇷 Korean, 🇹🇼 Traditional Chinese（Taiwan), 🇻🇳 Vietnamese, 🇹🇭 Thai. 
 
 If your language is not supported, you can still customize the wordings via the `configuration.wordings` api:
 
@@ -351,3 +361,6 @@ See [LICENSE](LICENSE) for details.
 - Swift 3 -> version [**1.2.0**](https://github.com/Yummypets/YPImagePicker/releases/tag/1.2.0)
 - Swift 4.1 -> version [**3.4.1**](https://github.com/Yummypets/YPImagePicker/releases/tag/3.4.0)
 - Swift 4.2 -> version [**3.5.2**](https://github.com/Yummypets/YPImagePicker/releases/tag/3.5.2)
+releases/tag/3.4.0)
+- Swift 5.0 -> version [**4.0.0**](https://github.com/Yummypets/YPImagePicker/releases/tag/4.0.0)
+- Swift 5.1 -> version [**4.1.2**](https://github.com/Yummypets/YPImagePicker/releases/tag/4.1.2)
