@@ -642,7 +642,8 @@ extension YPLibraryVC {
 		
 		self.v.assetViewContainer.deleteButton.isHidden = !YPLibraryVC.canDeselectItem
 		
-		self.v.assetViewContainerConstraintTop.constant = show ? 16 : -self.v.assetViewContainer.frame.size.height
+		self.v.assetViewContainerConstraintTop.constant = show ? 0 : -self.v.assetViewContainer.frame.size.height
+        self.v.galleryCollectionViewTopConstraint.constant = show ? 0 : 25
 		if !show {
 			self.v.assetViewContainer.zoomableView?.collapseAssetFrame()
 		}

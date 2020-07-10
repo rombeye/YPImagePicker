@@ -373,25 +373,30 @@ extension YPLibraryVC: UICollectionViewDelegateFlowLayout {
                                layout collectionViewLayout: UICollectionViewLayout,
                                sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == v.thumbCollectionView {
-            return CGSize(width: 32, height: 32)
+            return CGSize(width: 40, height: 40)
         }
         let margins = YPConfig.library.spacingBetweenItems * CGFloat(YPConfig.library.numberOfItemsInRow + 1)
         let screen = UIScreen.main.bounds.width
-        let width = Int(screen - margins) / YPConfig.library.numberOfItemsInRow
+        let width:CGFloat = CGFloat(screen - margins) / CGFloat(YPConfig.library.numberOfItemsInRow)
         
         return CGSize(width: width, height: width)
     }
 
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         if collectionView == v.thumbCollectionView {
-            return 8.0
+            return 16.0
         }
         return YPConfig.library.spacingBetweenItems
     }
-
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        if collectionView == v.thumbCollectionView {
+                  return UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 0)
+        }
+        return UIEdgeInsets(top: 0, left: 1, bottom: 0, right: 1)
+    }
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         if collectionView == v.thumbCollectionView {
-            return 8.0
+            return 16.0
         }
         return YPConfig.library.spacingBetweenItems
     }

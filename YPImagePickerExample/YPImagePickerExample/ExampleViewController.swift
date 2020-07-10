@@ -55,6 +55,8 @@ class ExampleViewController: UIViewController {
                 g.dismiss(animated: true, completion: nil)
             }
             let navC = UINavigationController(rootViewController: gallery)
+            navC.modalPresentationStyle = .fullScreen
+
             self.present(navC, animated: true, completion: nil)
         } else {
             print("No items selected yet.")
@@ -168,7 +170,8 @@ class ExampleViewController: UIViewController {
         //options.sortDescriptors = [sortDescriptor]
         //
         //config.library.options = options
-
+        config.library.spacingBetweenItems = 1
+        config.library.numberOfItemsInRow = 3
         let picker = YPImagePicker(configuration: config)
 
         /* Change configuration directly */
@@ -231,7 +234,7 @@ class ExampleViewController: UIViewController {
         //        print("😀 \(String(describing: self?.resolutionForLocalVideo(url: assetURL)!))")
         //    })
         //}
-
+        picker.modalPresentationStyle = .fullScreen
         present(picker, animated: true, completion: nil)
     }
 }

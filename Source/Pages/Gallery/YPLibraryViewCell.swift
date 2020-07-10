@@ -47,7 +47,7 @@ class YPMultipleSelectionIndicator: UIView {
         selectionOverlay.isHidden = (number == nil)
         if let number = number {
             imageView.image = imageFromBundle("yp_\(number)")
-            selectionOverlay.alpha = 0.75
+            selectionOverlay.alpha = 0.4
         } else {
             imageView.image = nil
             selectionOverlay.alpha = 0.0
@@ -141,12 +141,12 @@ class YPLibraryThumbCell: UICollectionViewCell {
         imageView.fillContainer()
         selectionOverlay.fillContainer()
 
-        self.layer.cornerRadius = 8.0
-        self.layer.borderColor = UIColor.white.cgColor
-        self.layer.borderWidth = 0.5
+        self.layer.cornerRadius = 4.0
+        self.layer.borderColor = UIColor(red: 0.741, green: 0.741, blue: 0.761, alpha: 1).cgColor
+        self.layer.borderWidth = 1.0
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
-        imageView.layer.cornerRadius = 8.0
+        imageView.layer.cornerRadius = 4.0
         self.layer.masksToBounds = true
         selectionOverlay.backgroundColor = .white
         selectionOverlay.alpha = 0
@@ -160,9 +160,9 @@ class YPLibraryThumbCell: UICollectionViewCell {
     
     override var isHighlighted: Bool {
         didSet {
-            selectionOverlay.alpha = 0.0
+            self.layer.borderColor = UIColor(red: 0.741, green: 0.741, blue: 0.761, alpha: 1).cgColor
             if isHighlighted {
-                selectionOverlay.alpha = 0.8
+                self.layer.borderColor = UIColor(red: 0, green: 0.569, blue: 1, alpha: 1).cgColor
             }
         }
     }

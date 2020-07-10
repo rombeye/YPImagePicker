@@ -36,7 +36,7 @@ class YPAssetViewContainer: UIView {
         newFrame.origin.y = 0
         grid.frame = newFrame
         clipsToBounds = true
-        self.layer.cornerRadius = 4.0
+        self.layer.cornerRadius = 0.0
         for sv in subviews {
             if let cv = sv as? YPAssetZoomableView {
                 zoomableView = cv
@@ -89,9 +89,9 @@ class YPAssetViewContainer: UIView {
         // Multiple selection button
         sv(deleteButton)
         deleteButton.size(32)
-        deleteButton-8-|
+        deleteButton-16-|
         deleteButton.setImage(YPConfig.icons.deleteImage, for: .normal)
-        deleteButton.Top == zoomableView!.Top + 8
+        deleteButton.Top == zoomableView!.Top + 16
         deleteButton.isHidden = true
     }
     

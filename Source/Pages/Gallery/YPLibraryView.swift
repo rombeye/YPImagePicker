@@ -20,6 +20,7 @@ final class YPLibraryView: UIView {
     @IBOutlet weak var aspectRatioViewConstraint: NSLayoutConstraint!
 	@IBOutlet weak var assetWidthConstraint: NSLayoutConstraint!
 	@IBOutlet weak var assetHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var galleryCollectionViewTopConstraint: NSLayoutConstraint!
     
     let maxNumberWarningView = UIView()
     let maxNumberWarningLabel = UILabel()
@@ -40,7 +41,7 @@ final class YPLibraryView: UIView {
         
         layout(
             assetViewContainer,
-            |line| ~ 1
+            |line| ~ 0
         )
         
         line.backgroundColor = .white
