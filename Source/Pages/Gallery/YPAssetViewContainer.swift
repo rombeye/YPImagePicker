@@ -75,8 +75,8 @@ class YPAssetViewContainer: UIView {
             squareCropButton.setImage(YPConfig.icons.collapseIcon, for: .normal)
             sv(squareCropButton)
             squareCropButton.size(32)
-            squareCropButton-8-|
-            squareCropButton.Bottom == zoomableView!.Bottom - 8
+            squareCropButton-16-|
+            squareCropButton.Bottom == zoomableView!.Bottom - 16
         }
         
         // Multiple selection button
